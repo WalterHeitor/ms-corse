@@ -1,15 +1,15 @@
 package com.softWalter.hrpayroll.presentation.dto;
 
-public class WorkerResponse {
+public class Worker {
 
     private Long workerId;
     private String workerName;
     private Double dialyIncome;
 
-    public WorkerResponse() {
+    public Worker() {
     }
 
-    public WorkerResponse(Long workerId, String workerName, Double dialyIncome) {
+    public Worker(Long workerId, String workerName, Double dialyIncome) {
         this.workerId = workerId;
         this.workerName = workerName;
         this.dialyIncome = dialyIncome;
