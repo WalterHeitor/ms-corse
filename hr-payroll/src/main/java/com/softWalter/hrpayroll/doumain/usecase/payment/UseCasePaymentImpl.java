@@ -1,34 +1,25 @@
 package com.softWalter.hrpayroll.doumain.usecase.payment;
 
+
 import com.softWalter.hrpayroll.doumain.model.Payment;
 import com.softWalter.hrpayroll.doumain.usecase.UseCasePayment;
-import com.softWalter.hrpayroll.presentation.dto.WorkerResponse;
+import com.softWalter.hrpayroll.feignclients.WorkerFeignClients;
+import com.softWalter.hrpayroll.presentation.dto.Worker;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class UseCasePaymentImpl implements UseCasePayment {
 
-    @Value("${hr-worker.host}")
-    private String workerHost;
     @Autowired
-    private RestTemplate restTemplate;
+    private WorkerFeignClients workerFeignClients;
 
     @Override
     public Payment getPayment(long workerId, int days) {
 
-        Map<String, String> uriVariables = new HashMap<>();
-        uriVariables.put("id", ""+workerId);
+        Worker worker =
+                workerFeignClients.findById(workerId).getBody();
 
-        WorkerResponse workerResponse =
-                restTemplate.getForObject(workerHost + "/sotWalter/v1/workers/{id}",
-                        WorkerResponse.class, uriVariables );
-
-        return new Payment(workerResponse.getWorkerName(), workerResponse.getDialyIncome(), days);
+        return new Payment(worker.getWorkerName(), worker.getDialyIncome(), days);
     }
 }
