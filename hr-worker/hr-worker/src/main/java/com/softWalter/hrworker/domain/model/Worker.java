@@ -1,13 +1,14 @@
 package com.softWalter.hrworker.domain.model;
 
-import jakarta.persistence.*;
 
+import javax.persistence.*;
 import java.util.Objects;
 @Entity
 @Table(name = "tb_worker")
 public class Worker {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long workerId;
     private String workerName;
     private Double dialyIncome;
