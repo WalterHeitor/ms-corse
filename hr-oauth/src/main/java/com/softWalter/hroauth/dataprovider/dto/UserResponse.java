@@ -1,34 +1,36 @@
 package com.softWalter.hroauth.dataprovider.dto;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-
-public class UserResponse {
-
+public class UserResponse implements Serializable, UserDetails {
+    private static final long serialVersionUID = 1L;
     private Long id;
-    private String username;
+    private String name;
     private String email;
     private String password;
 
 
     private Set<RoleResponse> roles = new HashSet<>();
 
-    public UserResponse(Long id, String username, String email, String password) {
+    public UserResponse(Long id, String name, String email, String password) {
         this.id = id;
-        this.username = username;
+        this.name = name;
         this.email = email;
         this.password = password;
     }
 
-    public UserResponse(String username, String email, String password) {
-        this.username = username;
+    public UserResponse(String name, String email, String password) {
+        this.name = name;
         this.email = email;
         this.password = password;
-    }
-
-    public UserResponse() {
     }
 
     public Long getId() {
@@ -39,12 +41,15 @@ public class UserResponse {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public UserResponse() {
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -55,10 +60,6 @@ public class UserResponse {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -66,4 +67,41 @@ public class UserResponse {
     public Set<RoleResponse> getRoles() {
         return roles;
     }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles.stream().map(roleResponse ->
+                new SimpleGrantedAuthority(roleResponse.getRoleName()))
+                .collect(Collectors.toList());
+    }
+
 }
