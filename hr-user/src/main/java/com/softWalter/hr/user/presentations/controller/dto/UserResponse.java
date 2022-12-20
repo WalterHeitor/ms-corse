@@ -1,43 +1,26 @@
-package com.softWalter.hr.user.doumain.entities;
+package com.softWalter.hr.user.presentations.controller.dto;
 
-import javax.persistence.*;
+import com.softWalter.hr.user.doumain.entities.Role;
 
-import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "tb_user")
-public class User implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserResponse {
+
     private Long id;
     private String username;
-    @Column(unique = true)
     private String email;
     private String password;
+    private Set<Role> roles;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "tb_user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
-
-    public User(Long id, String username, String email, String password) {
+    public UserResponse(Long id, String username, String email, String password, Set<Role> roles) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.roles = roles;
     }
 
-    public User(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
-
-    public User() {
+    public UserResponse() {
     }
 
     public Long getId() {
@@ -74,5 +57,9 @@ public class User implements Serializable {
 
     public Set<Role> getRoles() {
         return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
