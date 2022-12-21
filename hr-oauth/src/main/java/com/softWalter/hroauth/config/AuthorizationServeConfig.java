@@ -2,6 +2,7 @@ package com.softWalter.hroauth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +17,11 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServeConfig extends AuthorizationServerConfigurerAdapter {
+
+    @Value("${oauth.client.name")
+    private String clientId;
+    @Value("${oauth.client.secret")
+    private String rawPassword;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
